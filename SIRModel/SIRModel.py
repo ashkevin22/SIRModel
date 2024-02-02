@@ -53,3 +53,35 @@ for beta in beta_arr:
     legend = ax.legend(loc='right', fontsize='large')
 
     plt.savefig('SIR_beta_' + str(beta) + '.png')
+
+##################################
+# Q3.d, beta=1, gamma=0.5, R_0=2 #
+##################################
+    
+N = 1000
+S = 999
+I = 1
+R = 0
+
+S_arr = [S]
+I_arr = [I]
+R_arr = [R]
+for i in range(iterations - 1):
+    S, I, R = forward_euler(N, S, I, R, 1, 0.5, t)
+    S_arr.append(S)
+    I_arr.append(I)
+    R_arr.append(R)
+
+x = list(range(iterations))
+fig, ax = plt.subplots()
+ax.plot(x, S_arr, 'b', label='S')
+ax.plot(x, I_arr, 'r', label='I')
+ax.plot(x, R_arr, 'k', label='R')
+ax.plot(x, [N*0.7968]*len(x), 'g--', label='r_inf')
+ax.set_xlabel('Time')
+ax.set_ylabel('People')
+ax.set_title('SIR with beta=1, gamma=0.5, and r_inf=0.7968 (Kevin Ash)')
+
+legend = ax.legend(loc='right', fontsize='large')
+
+plt.savefig('SIR_r_inf.png')

@@ -11,12 +11,16 @@ def f_r_inf(r_inf):
     return r_inf
 
 r_inf = np.arange(0.,0.5,0.01)
-R_0 = [0.9,1.0,1.1,1.2]
+#intersect of 2 roughly equals 0.7968
+R_0 = [0.9,1.0,1.1,1.2,2]
 
 for r_0 in R_0:
     # referece: https://glowingpython.blogspot.com/2011/05/hot-to-find-intersection-of-two.html
     intersect = fsolve(lambda x : g_r_inf(x, r_0) - f_r_inf(x), 1)
     print(intersect)
+    if r_0 > 1.5:
+        # Only interested in playing with intersect, don't want to graph this
+        continue
 
     g_r_inf_values = [g_r_inf(x, r_0) for x in r_inf]
     f_r_inf_values = [f_r_inf(x) for x in r_inf]
