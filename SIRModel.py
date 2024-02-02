@@ -1,15 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def forward_euler(N, S, I, R, beta, gamma):
+def forward_euler(N, S, I, R, beta, gamma, t):
+    """
+    forward_euler computes one step of forward Euler 
+    :param N: Total number of people in population
+    :param S: Total number of susceptibles in population
+    :param I: Total number of infected people in population
+    :param R: Total number of recovered people in population
+    :param beta: Transmission rate constant
+    :param gamma: Recovery rate
+    :param t: time step value
+    :returns: new values for S, I, R (in that order)
+    """
     # We are assuming that every interaction occurs at the exact same time
     # i.e. people who just got infected this time step are not included in people who can recover
-    new_infected = (beta * (S/float(N)) * (I/float(N))) * t
-    new_recovered = (gamma * (I/float(N))) * t
-    return S - new_infected, I + new_infected - new_recovered, R + new_recovered
+    S_dot = -((beta * S * I)/float(N))
+    I_dot = ((beta * S * I)/float(N)) - gamma * I
+    R_dot = gamma * I
+    return S + (S_dot * t), I + (I_dot * t), R + (R_dot * t)
 
 # params to change
-t = 100
+t = 0.1
 iterations = 500
 beta_arr = [1, 1.5, 2]
 gamma = 0.5
@@ -24,7 +36,7 @@ for beta in beta_arr:
     I_arr = [I]
     R_arr = [R]
     for i in range(iterations - 1):
-        S, I, R = forward_euler(N, S, I, R, beta, gamma)
+        S, I, R = forward_euler(N, S, I, R, beta, gamma, t)
         S_arr.append(S)
         I_arr.append(I)
         R_arr.append(R)
