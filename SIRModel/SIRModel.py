@@ -54,9 +54,9 @@ for beta in beta_arr:
 
     plt.savefig('SIR_beta_' + str(beta) + '.png')
 
-##################################
-# Q3.d, beta=1, gamma=0.5, R_0=2 #
-##################################
+################################################
+# Q3.d, beta=1, gamma=0.5, R_0=2, r_inf=0.7968 #
+################################################
     
 N = 1000
 S = 999
@@ -77,6 +77,7 @@ fig, ax = plt.subplots()
 ax.plot(x, S_arr, 'b', label='S')
 ax.plot(x, I_arr, 'r', label='I')
 ax.plot(x, R_arr, 'k', label='R')
+# graph r_inf=0.7968 calculated from fsolve.py with R_0=2
 ax.plot(x, [N*0.7968]*len(x), 'g--', label='r_inf')
 ax.set_xlabel('Time')
 ax.set_ylabel('People')
