@@ -45,11 +45,20 @@ C = np.array([[float(9)/20] * 4] * 4)
 S_arr = S
 I_arr = I
 R_arr = R
+p_bar_arr = []
 for i in range(iterations - 1):
     S, I, R = forward_euler(S, I, R, P, C, omega, gamma, t)
     S_arr = np.vstack((S_arr, S))
     I_arr = np.vstack((I_arr, I))
     R_arr = np.vstack((R_arr, R))
+    
+    numerator = 0
+    denom = 0
+    for i, s in enumerate(S):
+        numerator += s * P[i]
+        denom += s
+    p_bar_arr.append(numerator/denom)
+
 
 #Thanks to Parker for helping me w/ the graphing bc I could not figure it out for the life of me
 num_lines = len(I_arr[0])
@@ -67,3 +76,26 @@ plt.ylabel("Proportion of population")
 plt.title("Infected Proportions for Each Population (Kevin Ash)")
 plt.legend()
 plt.savefig('SIRModelPopStruct.png')
+
+plt.cla()
+
+colors = sns.color_palette("Blues", n_colors=num_lines)
+
+# Actually plotting
+for ind in range(num_lines):
+    s = S_arr[:, ind]
+    plt.plot(t_arr, s, label=f"Group {ind + 1}", color=colors[ind])
+plt.xlabel("Time")
+plt.ylabel("Proportion of population")
+plt.title("Susceptible Proportions for Each Population (Kevin Ash)")
+plt.legend()
+plt.savefig('SIRModelPopStructSus.png')
+
+plt.cla()
+
+plt.plot(t_arr[1:], p_bar_arr, label="p_bar", color="black")
+plt.xlabel("Time")
+plt.ylabel("Relative Susceptibility")
+plt.title("Relative Susceptibility Among Susceptibles (Kevin Ash)")
+plt.legend()
+plt.savefig('SIRModelPopStructRelSus.png')
